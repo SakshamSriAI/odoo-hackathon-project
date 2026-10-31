@@ -47,20 +47,42 @@ Brightloop Software is an enterprise-grade Subscription Management and Billing e
 
 ---
 
-## 📦 Getting Started
+## 📦 Getting Started in VS Code
 
-### 1. Installation
+### Step 1: Clone & Open in VS Code
+```bash
+git clone https://github.com/SakshamSriAI/odoo-hackathon-project.git
+cd odoo-hackathon-project
+code .
+```
+
+### Step 2: Install Node Dependencies
+Open the VS Code Terminal (`Ctrl + \`` or `Cmd + \``) and install packages:
 ```bash
 npm install
 ```
 
-### 2. Development Server
+### Step 3: Run the Development Server
 ```bash
 npm run dev
 ```
+Click the terminal link `http://localhost:5173/` or open it in your browser.
 
-### 3. Production Build
+> ⚠️ **Important Note on VS Code Live Preview / Live Server**:
+> Do **NOT** use extensions like *Live Server* or VS Code *Show Preview* directly on `index.html`. 
+> Brightloop is a modern React 18 + TypeScript application that requires Vite's compilation server. Always start the app using `npm run dev` or `npm run preview`.
+
+### Step 4: Previewing Production Build
 ```bash
-npm run build
 npm run preview
 ```
+*(Automatically compiles `dist/` and launches the preview server at `http://localhost:4173`)*
+
+---
+
+## 🔑 Demo Login Accounts
+
+On first launch, you are redirected to `/login`. Click any 1-click test persona pill to immediately access:
+- **Admin**: `admin@brightloop.io` / `Password123!`
+- **Staff (Sales Ops)**: `staff@brightloop.io` / `Password123!`
+- **Customer**: `customer@brightloop.io` / `Password123!`
