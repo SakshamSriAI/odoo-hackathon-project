@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { CatalogProvider } from './context/CatalogContext';
@@ -53,7 +53,7 @@ const RootRedirect: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter basename="/odoo-hackathon-project">
       <NotificationProvider>
         <AuthProvider>
           <CatalogProvider>
@@ -309,7 +309,7 @@ export const App: React.FC = () => {
           </CatalogProvider>
         </AuthProvider>
       </NotificationProvider>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 export default App;

@@ -2,6 +2,7 @@
   "name": "brightloop-frontend",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://sakshamsriai.github.io/odoo-hackathon-project",
   "type": "module",
   "scripts": {
     "dev": "vite",
