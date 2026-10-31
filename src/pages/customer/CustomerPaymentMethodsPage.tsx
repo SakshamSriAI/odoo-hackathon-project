@@ -8,15 +8,12 @@ import {
   Plus,
   ShieldCheck,
   Lock,
-  Trash2,
-  Calendar,
-  AlertCircle,
   X,
 } from 'lucide-react';
 
 interface PaymentCard {
   id: string;
-  brand: 'Visa' | 'Mastercard' | 'Amex';
+  brand: 'Visa' | 'Mastercard';
   last4: string;
   expiry: string;
   holder: string;
@@ -26,6 +23,7 @@ interface PaymentCard {
 export const CustomerPaymentMethodsPage: React.FC = () => {
   const { user } = useAuth();
   const { notify } = useNotification();
+  const orgName = user?.organization || 'Acme Technologies Inc.';
 
   const [cards, setCards] = useState<PaymentCard[]>([
     {
@@ -88,107 +86,153 @@ export const CustomerPaymentMethodsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
-      <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-2 border border-blue-200">
-            <Lock className="w-3.5 h-3.5" />
-            <span>PCI-DSS Level 1 Encrypted</span>
-          </div>
-          <h2 className="text-xl font-bold text-slate-900">Payment Profile & Credentials</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Configure automated settlement cards and billing tax details for {user?.organization || 'Acme Technologies Inc.'}
-          </p>
+      {/* 1. Payment Profile & Credentials Card Container */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6 space-y-6">
+        {/* Header with Title and Add Payment Method Button */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900">
+            Payment Profile & Credentials
+          </h2>
+
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition-colors shadow-xs cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Add Payment Method</span>
+          </button>
         </div>
 
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition-colors shadow-xs cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add Payment Method</span>
-        </button>
-      </div>
+        {/* Credit Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {cards.map((card) => {
+            const isDefault = card.isDefault;
 
-      {/* Cards List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            className={`p-5 rounded-2xl border transition-all ${
-              card.isDefault
-                ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white border-slate-800 shadow-lg'
-                : 'bg-white text-slate-900 border-slate-200 shadow-2xs hover:border-slate-300'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs ${
-                    card.isDefault ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'
-                  }`}
-                >
-                  {card.brand}
+            return (
+              <div
+                key={card.id}
+                className={`rounded-2xl p-6 transition-all flex flex-col justify-between min-h-[210px] ${
+                  isDefault
+                    ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-lg'
+                    : 'bg-white text-slate-900 border border-slate-200 shadow-2xs hover:border-slate-300'
+                }`}
+              >
+                {/* Card Top Row: Brand Logo & Status/Action */}
+                <div className="flex items-center justify-between">
+                  {/* Brand Logo */}
+                  {card.brand === 'Visa' ? (
+                    <span className="font-serif italic font-extrabold text-2xl tracking-tighter text-white select-none">
+                      VISA
+                    </span>
+                  ) : (
+                    <div className="flex items-center -space-x-2 select-none">
+                      <span className="w-7 h-7 rounded-full bg-rose-500 opacity-90 inline-block" />
+                      <span className="w-7 h-7 rounded-full bg-amber-400 opacity-90 inline-block" />
+                    </div>
+                  )}
+
+                  {/* Status Pill or Set as Default Button */}
+                  {isDefault ? (
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                      Default Card
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => setDefaultCard(card.id)}
+                      className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+                    >
+                      Set as Default
+                    </button>
+                  )}
                 </div>
-                <div>
-                  <div className={`text-xs font-bold ${card.isDefault ? 'text-white' : 'text-slate-900'}`}>
-                    •••• •••• •••• {card.last4}
-                  </div>
+
+                {/* Card Middle Row: Masked Number & Expiry */}
+                <div className="flex items-baseline justify-between my-4">
                   <div
-                    className={`text-[11px] ${
-                      card.isDefault ? 'text-slate-300' : 'text-slate-400'
+                    className={`text-xl font-mono tracking-widest font-semibold ${
+                      isDefault ? 'text-white' : 'text-slate-900'
                     }`}
                   >
-                    Expires {card.expiry}
+                    •••• •••• •••• {card.last4}
+                  </div>
+
+                  <div className="text-right">
+                    <div
+                      className={`text-[10px] uppercase tracking-wider font-medium ${
+                        isDefault ? 'text-slate-400' : 'text-slate-400'
+                      }`}
+                    >
+                      Expires
+                    </div>
+                    <div
+                      className={`text-sm font-mono font-bold ${
+                        isDefault ? 'text-slate-200' : 'text-slate-700'
+                      }`}
+                    >
+                      {card.expiry}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Bottom Row: Cardholder & Auto-Renew Status */}
+                <div className="pt-2 border-t border-slate-100/10 space-y-1">
+                  <div
+                    className={`text-sm font-medium ${
+                      isDefault ? 'text-slate-200' : 'text-slate-700'
+                    }`}
+                  >
+                    {card.holder}
+                  </div>
+                  <div
+                    className={`text-[10px] font-bold uppercase tracking-wider ${
+                      isDefault ? 'text-emerald-400' : 'text-slate-400'
+                    }`}
+                  >
+                    AUTO-RENEW LINKED
                   </div>
                 </div>
               </div>
-
-              {card.isDefault ? (
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-300" />
-                  <span>Default Card</span>
-                </span>
-              ) : (
-                <button
-                  onClick={() => setDefaultCard(card.id)}
-                  className="px-2.5 py-1 rounded-lg text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
-                >
-                  Set as Default
-                </button>
-              )}
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs">
-              <span className={`text-[11px] ${card.isDefault ? 'text-slate-300' : 'text-slate-500'}`}>
-                {card.holder}
-              </span>
-              <span className="text-[10px] uppercase tracking-wider font-semibold opacity-70">
-                Auto-Renew Linked
-              </span>
-            </div>
-          </div>
-        ))}
+            );
+          })}
+        </div>
       </div>
 
-      {/* Corporate Tax Identification Box */}
-      <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-          <Building2 className="w-4 h-4 text-emerald-600" />
-          <span>Corporate Tax & Invoicing Entity</span>
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <div className="text-slate-400 text-[11px] font-medium">Legal Business Entity</div>
-            <div className="text-slate-900 font-bold mt-0.5">{user?.organization || 'Acme Technologies Inc.'}</div>
+      {/* 2. Corporate Tax & Invoicing Entity Container */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6 space-y-4">
+        <h2 className="text-lg font-bold text-slate-900">
+          Corporate Tax & Invoicing Entity
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Block 1: Legal Business Entity */}
+          <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 shadow-2xs space-y-2">
+            <div className="text-xs text-slate-400 font-medium">
+              Legal Business Entity:
+            </div>
+            <div className="text-base font-bold text-slate-900">
+              {orgName}
+            </div>
           </div>
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <div className="text-slate-400 text-[11px] font-medium">Federal Tax / EIN</div>
-            <div className="text-slate-900 font-mono font-bold mt-0.5">US-EIN-94-3829102</div>
+
+          {/* Block 2: Federal Tax / EIN */}
+          <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 shadow-2xs space-y-2">
+            <div className="text-xs text-slate-400 font-medium">
+              Federal Tax / EIN:
+            </div>
+            <div className="text-base font-mono font-bold text-slate-900">
+              US–EIN–94–3829102
+            </div>
           </div>
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-            <div className="text-slate-400 text-[11px] font-medium">Standard Payment Terms</div>
-            <div className="text-slate-900 font-bold mt-0.5">Net 30 Automated ACH / Card</div>
+
+          {/* Block 3: Standard Payment Terms */}
+          <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 shadow-2xs space-y-2">
+            <div className="text-xs text-slate-400 font-medium">
+              Standard Payment Terms:
+            </div>
+            <div className="text-base font-bold text-slate-900 leading-snug">
+              <div>Net 30</div>
+              <div>Automated ACH / Card</div>
+            </div>
           </div>
         </div>
       </div>
@@ -204,7 +248,7 @@ export const CustomerPaymentMethodsPage: React.FC = () => {
               </h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/50"
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/50 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -272,13 +316,13 @@ export const CustomerPaymentMethodsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold transition-colors"
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-semibold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-semibold transition-colors shadow-xs"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-semibold transition-colors shadow-xs cursor-pointer"
                 >
                   Save Card
                 </button>
