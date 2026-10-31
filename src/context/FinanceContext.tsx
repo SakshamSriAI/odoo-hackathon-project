@@ -9,6 +9,7 @@ import { useInvoicing } from './InvoicingContext';
 import { useSales } from './SalesContext';
 import { useAuth } from './AuthContext';
 import { Subscription, SubscriptionStatus } from '../types/sales';
+import { financeApi } from '../services/api';
 
 const INITIAL_TRANSACTIONS: PaymentTransaction[] = [
   {
@@ -171,6 +172,22 @@ export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const [benchmarkExecutionTimeMs, setBenchmarkExecutionTimeMs] = useState(0);
 
+  // Synchronize payment transactions with backend SQLite database
+  useEffect(() => {
+    let isMounted = true;
+    financeApi.getPayments()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setTransactions(data);
+        }
+      })
+      .catch((err) => console.warn('[Finance] Using cached transactions:', err.message));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TRANSACTIONS, JSON.stringify(transactions));
   }, [transactions]);
@@ -204,6 +221,16 @@ export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (targetInvoice && input.amount >= targetInvoice.grandTotal * 0.95) {
         markInvoicePaid(targetInvoice.id);
       }
+
+      // Persist to backend SQLite
+      financeApi.recordPayment({
+        invoiceId: input.invoiceId,
+        amount: input.amount,
+        paymentMethod: input.paymentMethod,
+        transactionDate: input.transactionDate,
+        referenceNotes: input.referenceNotes,
+        staffRecordedBy: user?.name || 'Alex Vance',
+      }).catch((err) => console.error('[Finance] Backend payment recording failed:', err));
 
       return newTxn;
     },

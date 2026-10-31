@@ -49,7 +49,7 @@ export const PaymentsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -63,7 +63,7 @@ export const PaymentsPage: React.FC = () => {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md shadow-emerald-500/20 transition-all cursor-pointer self-start sm:self-auto"
+          className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md shadow-emerald-500/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Record New Transaction</span>
@@ -71,7 +71,7 @@ export const PaymentsPage: React.FC = () => {
       </div>
 
       {/* Explainer Banner */}
-      <div className="p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-900 rounded-2xl text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="hover-lift p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-900 rounded-2xl text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0">
             <CreditCard className="w-5 h-5" />
@@ -79,8 +79,8 @@ export const PaymentsPage: React.FC = () => {
           <div>
             <h4 className="text-sm font-bold text-white flex items-center gap-2">
               <span>Staff Payments Reconciliation Engine</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">
-                Phase 5 Implementation
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 badge-interactive">
+                Live Reconciliation
               </span>
             </h4>
             <p className="text-xs text-slate-300 mt-0.5">
@@ -106,7 +106,7 @@ export const PaymentsPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by transaction ID, invoice ID, or customer entity..."
-            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-emerald-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-emerald-500 transition-all"
           />
         </div>
 
@@ -114,7 +114,7 @@ export const PaymentsPage: React.FC = () => {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setMethodFilter('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               methodFilter === 'all'
                 ? 'bg-emerald-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -124,7 +124,7 @@ export const PaymentsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setMethodFilter('ach')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               methodFilter === 'ach'
                 ? 'bg-emerald-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -134,7 +134,7 @@ export const PaymentsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setMethodFilter('wire_transfer')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               methodFilter === 'wire_transfer'
                 ? 'bg-emerald-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -144,7 +144,7 @@ export const PaymentsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setMethodFilter('credit_card')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               methodFilter === 'credit_card'
                 ? 'bg-emerald-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -154,7 +154,7 @@ export const PaymentsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setMethodFilter('check')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               methodFilter === 'check'
                 ? 'bg-emerald-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -191,7 +191,7 @@ export const PaymentsPage: React.FC = () => {
                 </tr>
               ) : (
                 filteredTransactions.map((txn) => (
-                  <tr key={txn.id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={txn.id} className="interactive-row">
                     <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
                       {txn.id}
                     </td>
@@ -207,7 +207,7 @@ export const PaymentsPage: React.FC = () => {
 
                     <td className="py-3.5 px-4">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+                        className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-bold border badge-interactive ${
                           methodBadges[txn.paymentMethod]?.color || 'bg-slate-100 text-slate-700'
                         }`}
                       >

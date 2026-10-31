@@ -9,6 +9,7 @@ import {
 } from '../types/sales';
 import { useCatalog } from './CatalogContext';
 import { useAuth } from './AuthContext';
+import { salesApi } from '../services/api';
 
 export const DEFAULT_TEMPLATES: QuotationTemplate[] = [
   {
@@ -388,6 +389,35 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     () => subscriptions[0] || null
   );
 
+  // Initial server fetch to synchronize with SQLite backend
+  useEffect(() => {
+    let isMounted = true;
+    salesApi.getSubscriptions()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setSubscriptions(data);
+          setSelectedSubscription((prev) => {
+            if (!prev) return data[0];
+            const found = data.find((s) => s.id === prev.id);
+            return found || data[0];
+          });
+        }
+      })
+      .catch((err) => console.warn('[Sales] Using cached subscriptions:', err.message));
+
+    salesApi.getTemplates()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setTemplates(data);
+        }
+      })
+      .catch((err) => console.warn('[Sales] Using cached templates:', err.message));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_SUBSCRIPTIONS, JSON.stringify(subscriptions));
   }, [subscriptions]);
@@ -483,6 +513,19 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setSubscriptions((prev) => [newSub, ...prev]);
       setSelectedSubscription(newSub);
+
+      // Persist to backend SQLite
+      salesApi.createSubscription({
+        customer,
+        planId: newSub.planId,
+        paymentTerms: newSub.paymentTerms,
+        startDate: newSub.startDate,
+        expiryDate: newSub.expiryDate,
+        itemizedLines: newSub.itemizedLines,
+        notes: newSub.notes,
+        initialStatus: newSub.status,
+      }).catch((err) => console.error('[Sales] Backend subscription creation failed:', err));
+
       return newSub;
     },
     [templates, plans, products, user]
@@ -532,6 +575,19 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setSubscriptions((prev) => [newSub, ...prev]);
       setSelectedSubscription(newSub);
+
+      // Persist to backend SQLite
+      salesApi.createSubscription({
+        customer: input.customer,
+        planId: input.planId,
+        paymentTerms: input.paymentTerms,
+        startDate: input.startDate,
+        expiryDate: input.expiryDate,
+        itemizedLines: input.itemizedLines,
+        notes: input.notes,
+        initialStatus: input.initialStatus,
+      }).catch((err) => console.error('[Sales] Backend subscription creation failed:', err));
+
       return newSub;
     },
     [plans, user]
@@ -555,10 +611,11 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             closed: 'Subscription term concluded or terminated; moved to Closed stage.',
           };
 
+          const logNote = note || defaultNotes[targetStatus];
           const newLog = {
             status: targetStatus,
             timestamp: now,
-            note: note || defaultNotes[targetStatus],
+            note: logNote,
             actor: user?.name || 'Alex Vance (Sales Rep)',
           };
 
@@ -577,6 +634,11 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         })
       );
 
+      // Persist to backend SQLite
+      salesApi.advanceStatus(subscriptionId, targetStatus, note, user?.name).catch((err) =>
+        console.error('[Sales] Backend advance status failed:', err)
+      );
+
       return success;
     },
     [user, selectedSubscription]
@@ -588,6 +650,10 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (selectedSubscription?.id === id) {
         setSelectedSubscription(null);
       }
+      // Persist to backend SQLite
+      salesApi.deleteSubscription(id).catch((err) =>
+        console.error('[Sales] Backend delete subscription failed:', err)
+      );
     },
     [selectedSubscription]
   );

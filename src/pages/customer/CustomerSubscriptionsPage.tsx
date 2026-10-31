@@ -119,30 +119,30 @@ export const CustomerSubscriptionsPage: React.FC = () => {
         {subscriptions.map((sub) => (
           <div
             key={sub.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden hover:border-slate-300 transition-colors"
+            className="hover-lift group bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all duration-300"
           >
             {/* Card Header */}
-            <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                  <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-1 rounded-md border border-indigo-100 dark:border-indigo-800/60">
                     {sub.id}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                     <span>{sub.status}</span>
                   </span>
-                  <span className="px-2 py-0.5 text-[11px] font-medium text-slate-500 bg-slate-100 rounded">
+                  <span className="px-2 py-0.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 rounded">
                     Cadence: {sub.cadence}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mt-1">{sub.planName}</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{sub.planName}</h3>
               </div>
 
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <div className="text-2xl font-black text-slate-900">{sub.periodLabel}</div>
-                  <div className="text-[11px] text-slate-400">
+                  <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">{sub.periodLabel}</div>
+                  <div className="text-[11px] text-slate-400 dark:text-slate-500">
                     Covers {sub.seatsAllocated} provisioned seats
                   </div>
                 </div>
@@ -150,16 +150,16 @@ export const CustomerSubscriptionsPage: React.FC = () => {
             </div>
 
             {/* Card Body & Feature Breakdown */}
-            <div className="p-5 bg-slate-50/50 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+            <div className="p-5 bg-slate-50/50 dark:bg-slate-900/40 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
               {/* Feature list */}
               <div className="md:col-span-2 space-y-2">
-                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   Included Enterprise Entitlements
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {sub.productFeatures.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-slate-700">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 mt-0.5 shrink-0" />
+                    <div key={idx} className="flex items-start gap-2 text-slate-700 dark:text-slate-300">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -167,29 +167,29 @@ export const CustomerSubscriptionsPage: React.FC = () => {
               </div>
 
               {/* Schedule and policy settings */}
-              <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3">
-                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
+                <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   Term & Lifecycle Policies
                 </div>
-                <div className="space-y-1.5 text-slate-600">
+                <div className="space-y-1.5 text-slate-600 dark:text-slate-300">
                   <div className="flex justify-between">
                     <span>Activated:</span>
-                    <span className="font-semibold text-slate-900">{sub.startDate}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white font-mono">{sub.startDate}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Renewal Date:</span>
-                    <span className="font-semibold text-slate-900">{sub.renewalDate}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white font-mono">{sub.renewalDate}</span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-slate-700 font-medium">Auto-Renewal:</span>
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">Auto-Renewal:</span>
                   <button
                     onClick={() => toggleAutoRenew(sub.id)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                    className={`btn-tactile px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       sub.autoRenew
-                        ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                        : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                        ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-200'
+                        : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 hover:bg-slate-300'
                     }`}
                   >
                     {sub.autoRenew ? 'Enabled (Active)' : 'Disabled'}

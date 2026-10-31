@@ -1,12 +1,271 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   * {
     border-color: var(--color-slate-200);
   }
+  
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
+}
+
+/* Night Theme - Dark focused, high-contrast & elegant styling */
+html.dark {
+  color-scheme: dark;
+  background-color: #0b0f19;
+  color: #f8fafc;
+}
+
+html.dark body {
+  background-color: #0b0f19;
+  color: #f8fafc;
+}
+
+/* Enforce crystal-clear visibility for all headings, titles, sections & labels in dark mode */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f8fafc !important;
+}
+
+html.dark label {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-indigo-950,
+html.dark .text-purple-950,
+html.dark .text-emerald-950,
+html.dark .text-amber-950,
+html.dark .text-blue-950 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+/* Dark mode surface elevations */
+html.dark .bg-white {
+  background-color: #111827 !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-50\/60,
+html.dark .bg-slate-50\/70,
+html.dark .bg-slate-50\/75,
+html.dark .bg-slate-50\/80 {
+  background-color: #0b0f19 !important;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-200\/80 {
+  border-color: #1e293b !important;
+}
+
+html.dark .border-slate-300 {
+  border-color: #334155 !important;
+}
+
+/* Form controls high contrast */
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Data Tables */
+html.dark table thead tr,
+html.dark table thead th {
+  background-color: #0d1322 !important;
+  color: #cbd5e1 !important;
+  border-color: #1e293b !important;
+}
+
+/* Sticky Modal Headers in Dark Mode */
+html.dark .sticky {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+}
+
+/* ==========================================================
+   CLASSY, SATISFYING UX ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================== */
+
+/* 1. Floating 3D ambient animation */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.2deg);
+  }
+}
+.animate-float {
+  animation: floatGentle 4.5s ease-in-out infinite;
+}
+
+/* 2. Page / Container entrance transition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 3. Subtle pulse aura for live status indicators */
+@keyframes auraPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.3;
+  }
+}
+.live-dot-pulse {
+  position: relative;
+}
+.live-dot-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background-color: inherit;
+  opacity: 0.7;
+  animation: auraPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+
+/* 4. Interactive Lift-on-Hover for Cards */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -6px rgba(15, 23, 42, 0.08), 0 8px 12px -6px rgba(15, 23, 42, 0.04);
+}
+html.dark .hover-lift:hover {
+  box-shadow: 0 16px 32px -6px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(99, 102, 241, 0.12);
+  border-color: #334155 !important;
+}
+
+/* 5. Tactile Satisfying Button Press Effect */
+.btn-tactile {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.15s ease,
+              box-shadow 0.15s ease;
+}
+.btn-tactile:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+.btn-tactile:active {
+  transform: scale(0.97);
+}
+
+/* 6. Interactive Table Row Hover */
+.interactive-row {
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.interactive-row:hover {
+  background-color: rgba(99, 102, 241, 0.035) !important;
+}
+html.dark .interactive-row:hover {
+  background-color: rgba(99, 102, 241, 0.075) !important;
+}
+
+/* 7. Modal Pop Entrance Animation */
+@keyframes modalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.animate-modal-pop {
+  animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 8. Card Shine Hover Sheen */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.card-shine:hover::after {
+  transform: translateX(100%);
+}
+
+/* 9. Interactive Badge Pill */
+.badge-interactive {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+}
+.badge-interactive:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* 10. Subtle Interactive Icon Glow */
+.icon-glow-indigo:hover {
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.45));
+}
+.icon-glow-emerald:hover {
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.45));
 }
 
 /* Custom scrollbars */
@@ -23,4 +282,11 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }

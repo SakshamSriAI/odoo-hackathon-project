@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User, UserRole, AuthState, ResetPasswordRequest } from '../types/auth';
+import { authApi } from '../services/api';
 
 interface SignupData {
   name: string;
@@ -84,14 +85,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setIsLoading(false);
     }
+
+    // Check for any active password resets in backend
+    authApi.getResetRequests()
+      .then((requests) => {
+        if (Array.isArray(requests) && requests.length > 0) {
+          setResetRequests(requests);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const login = useCallback(async (email: string, specificRole?: UserRole): Promise<boolean> => {
     setIsLoading(true);
-    // Simulate slight network delay
-    await new Promise((r) => setTimeout(r, 400));
+    try {
+      const res = await authApi.login(email, specificRole);
+      if (res && res.user) {
+        setUser(res.user);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(res.user));
+        setIsLoading(false);
+        return true;
+      }
+    } catch (err) {
+      console.warn('[Auth] Backend login fallback to local credentials:', err);
+    }
 
-    // Determine role based on input or match default personas
+    // Fallback if backend offline
     let matchedUser: User;
     const lowerEmail = email.toLowerCase().trim();
 
@@ -116,7 +135,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signup = useCallback(async (data: SignupData): Promise<boolean> => {
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 500));
+    try {
+      const res = await authApi.signup(data);
+      if (res && res.user) {
+        setUser(res.user);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(res.user));
+        setIsLoading(false);
+        return true;
+      }
+    } catch (err) {
+      console.warn('[Auth] Backend signup fallback to local account:', err);
+    }
 
     const role = data.role || 'customer';
     const newUser: User = {
@@ -160,10 +189,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setUser(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+    // Persist switch to backend
+    authApi.switchRole(newRole).catch((err) =>
+      console.warn('[Auth] Backend switch-role notice:', err)
+    );
   }, [user]);
 
   const requestPasswordReset = useCallback(async (email: string) => {
-    await new Promise((r) => setTimeout(r, 450));
+    try {
+      const res = await authApi.resetPassword(email);
+      if (res && res.previewToken) {
+        const newReq: ResetPasswordRequest = {
+          email,
+          timestamp: new Date().toISOString(),
+          token: res.previewToken,
+        };
+        setResetRequests((prev) => [newReq, ...prev]);
+        return res;
+      }
+    } catch (err) {
+      console.warn('[Auth] Backend reset fallback:', err);
+    }
+
     const token = 'rst_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36);
     const newReq: ResetPasswordRequest = {
       email,

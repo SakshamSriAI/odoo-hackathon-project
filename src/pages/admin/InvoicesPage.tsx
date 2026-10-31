@@ -75,7 +75,7 @@ export const InvoicesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -88,7 +88,7 @@ export const InvoicesPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+          <span className="text-xs font-semibold text-slate-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs badge-interactive">
             Total Invoices: <strong className="text-indigo-600 font-mono">{invoices.length}</strong>
           </span>
         </div>
@@ -104,7 +104,7 @@ export const InvoicesPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search invoices by ID, client company, or customer name..."
-            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500 transition-all"
           />
         </div>
 
@@ -112,7 +112,7 @@ export const InvoicesPage: React.FC = () => {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'all'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -122,7 +122,7 @@ export const InvoicesPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('draft')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'draft'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -132,7 +132,7 @@ export const InvoicesPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('confirmed')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'confirmed'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -142,7 +142,7 @@ export const InvoicesPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('paid')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'paid'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -180,7 +180,7 @@ export const InvoicesPage: React.FC = () => {
                 filteredInvoices.map((inv) => (
                   <tr
                     key={inv.id}
-                    className="hover:bg-slate-50/70 transition-colors cursor-pointer"
+                    className="interactive-row cursor-pointer"
                     onClick={() => setSelectedInvoice(inv)}
                   >
                     {/* Invoice ID */}
@@ -210,7 +210,7 @@ export const InvoicesPage: React.FC = () => {
                     {/* Status Indicator (Draft, Confirmed, Paid) */}
                     <td className="py-3.5 px-4">
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border badge-interactive ${
                           statusBadges[inv.status].badge
                         }`}
                       >
@@ -231,14 +231,14 @@ export const InvoicesPage: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Action Buttons: Confirm, Cancel, Send, Print (Phase 4 Requirement) */}
+                    {/* Action Buttons: Confirm, Cancel, Send, Print */}
                     <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center gap-1.5">
                         {/* Confirm */}
                         {inv.status === 'draft' && (
                           <button
                             onClick={() => handleConfirm(inv)}
-                            className="p-1.5 text-amber-600 hover:text-amber-800 hover:bg-amber-50 rounded-lg transition-colors"
+                            className="btn-tactile p-1.5 text-amber-600 hover:text-amber-800 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
                             title="Confirm Invoice"
                           >
                             <CheckCircle2 className="w-4 h-4" />
@@ -248,7 +248,7 @@ export const InvoicesPage: React.FC = () => {
                         {/* Send */}
                         <button
                           onClick={() => handleSend(inv)}
-                          className="p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition-colors"
+                          className="btn-tactile p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
                           title="Send Invoice to Customer"
                         >
                           <Send className="w-4 h-4" />
@@ -257,7 +257,7 @@ export const InvoicesPage: React.FC = () => {
                         {/* Print */}
                         <button
                           onClick={() => handlePrint(inv)}
-                          className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                          className="btn-tactile p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="Print Invoice"
                         >
                           <Printer className="w-4 h-4" />
@@ -267,7 +267,7 @@ export const InvoicesPage: React.FC = () => {
                         {inv.status !== 'cancelled' && inv.status !== 'paid' && (
                           <button
                             onClick={() => handleCancel(inv)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="btn-tactile p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                             title="Cancel Invoice"
                           >
                             <XCircle className="w-4 h-4" />
@@ -277,7 +277,7 @@ export const InvoicesPage: React.FC = () => {
                         {/* View Modal */}
                         <button
                           onClick={() => setSelectedInvoice(inv)}
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors"
+                          className="btn-tactile p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="View Details"
                         >
                           <Eye className="w-4 h-4" />

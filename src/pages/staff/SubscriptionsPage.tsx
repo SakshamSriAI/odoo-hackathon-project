@@ -62,7 +62,7 @@ export const SubscriptionsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -76,7 +76,7 @@ export const SubscriptionsPage: React.FC = () => {
 
         <button
           onClick={() => setIsGeneratorModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
+          className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <FileSpreadsheet className="w-4 h-4" />
           <span>New Quotation from Template</span>
@@ -93,7 +93,7 @@ export const SubscriptionsPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by subscription #, customer company, or plan name..."
-            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500 transition-all"
           />
         </div>
 
@@ -101,7 +101,7 @@ export const SubscriptionsPage: React.FC = () => {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'all'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -111,7 +111,7 @@ export const SubscriptionsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('draft')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'draft'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -121,7 +121,7 @@ export const SubscriptionsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('quotation')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'quotation'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -131,7 +131,7 @@ export const SubscriptionsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('confirmed')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'confirmed'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -141,7 +141,7 @@ export const SubscriptionsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('active')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'active'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -151,7 +151,7 @@ export const SubscriptionsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('closed')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === 'closed'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -190,7 +190,7 @@ export const SubscriptionsPage: React.FC = () => {
                   return (
                     <tr
                       key={sub.id}
-                      className="hover:bg-slate-50/70 transition-colors cursor-pointer"
+                      className="interactive-row cursor-pointer"
                       onClick={() => setViewingDetailSub(sub)}
                     >
                       {/* Subscription Number */}
@@ -218,7 +218,7 @@ export const SubscriptionsPage: React.FC = () => {
                       {/* Pipeline Status Stepper Indicator */}
                       <td className="py-3.5 px-4">
                         <span
-                          className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${
+                          className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border badge-interactive ${
                             statusBadges[sub.status].color
                           }`}
                         >
@@ -244,7 +244,7 @@ export const SubscriptionsPage: React.FC = () => {
                       <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => setViewingDetailSub(sub)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+                          className="btn-tactile inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View Pipeline</span>

@@ -2,15 +2,25 @@
   "name": "brightloop-frontend",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://sakshamsriai.github.io/odoo-hackathon-project",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "server": "tsx server/index.ts",
+    "seed": "tsx server/db/seed.ts",
+    "start": "tsx server/index.ts",
+    "test:api": "node server/test-api.mjs",
+    "test:lifecycle": "node server/test-lifecycle.mjs",
+    "db:check": "node server/inspect-db.mjs",
     "build": "tsc && vite build",
-    "preview": "npm run build && vite preview"
+    "preview": "vite preview"
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "lightningcss-darwin-arm64": "^1.32.0",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,10 +29,14 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^10.0.6",
     "tailwindcss": "^4.0.9",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.3",
     "vite": "^6.2.0"
   }

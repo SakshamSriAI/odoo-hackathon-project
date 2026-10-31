@@ -207,7 +207,7 @@ export const QuotationGeneratorModal: React.FC<QuotationGeneratorModalProps> = (
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto animate-modal-pop">
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
           <div>
@@ -216,7 +216,7 @@ export const QuotationGeneratorModal: React.FC<QuotationGeneratorModalProps> = (
                 Sales Rep Workflow
               </span>
               <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs text-slate-500 font-medium">Phase 3 Implementation</span>
+              <span className="text-xs text-slate-500 font-medium">Quotation Engine</span>
             </div>
             <h3 className="text-lg font-bold text-slate-900 mt-1">
               Generate New Subscription from Quotation Template
@@ -224,7 +224,7 @@ export const QuotationGeneratorModal: React.FC<QuotationGeneratorModalProps> = (
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="btn-tactile p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -533,13 +533,13 @@ export const QuotationGeneratorModal: React.FC<QuotationGeneratorModalProps> = (
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+              className="btn-tactile px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all cursor-pointer"
+              className="btn-tactile px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               <span>Generate Quotation & Initialize Pipeline</span>

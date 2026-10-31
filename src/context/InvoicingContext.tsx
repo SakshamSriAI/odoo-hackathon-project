@@ -7,6 +7,7 @@ import {
   InvoiceLineItem,
 } from '../types/invoicing';
 import { Subscription } from '../types/sales';
+import { invoicingApi } from '../services/api';
 
 export const INITIAL_DISCOUNT_RULES: DiscountRule[] = [
   {
@@ -281,6 +282,35 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     () => invoices[0] || null
   );
 
+  // Synchronize state with backend SQLite database
+  useEffect(() => {
+    let isMounted = true;
+    invoicingApi.getInvoices()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setInvoices(data);
+          setSelectedInvoice((prev) => {
+            if (!prev) return data[0];
+            const found = data.find((i) => i.id === prev.id);
+            return found || data[0];
+          });
+        }
+      })
+      .catch((err) => console.warn('[Invoicing] Using cached invoices:', err.message));
+
+    invoicingApi.getDiscounts()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setDiscountRules(data);
+        }
+      })
+      .catch((err) => console.warn('[Invoicing] Using cached discounts:', err.message));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_DISCOUNTS, JSON.stringify(discountRules));
   }, [discountRules]);
@@ -311,6 +341,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
 
     setDiscountRules((prev) => [newRule, ...prev]);
+
+    // Persist to backend SQLite
+    invoicingApi.createDiscount(newRule).catch((err) =>
+      console.error('[Invoicing] Backend discount creation failed:', err)
+    );
+
     return newRule;
   }, []);
 
@@ -320,10 +356,20 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         r.id === id ? { ...r, ...updates, updatedAt: new Date().toISOString() } : r
       )
     );
+
+    // Persist to backend SQLite
+    invoicingApi.updateDiscount(id, updates).catch((err) =>
+      console.error('[Invoicing] Backend discount update failed:', err)
+    );
   }, []);
 
   const deleteDiscountRule = useCallback((id: string) => {
     setDiscountRules((prev) => prev.filter((r) => r.id !== id));
+
+    // Persist to backend SQLite
+    invoicingApi.deleteDiscount(id).catch((err) =>
+      console.error('[Invoicing] Backend discount delete failed:', err)
+    );
   }, []);
 
   // Invoice Operational Actions (Confirm, Cancel, Send, Mark Paid)
@@ -344,6 +390,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return updated;
       })
     );
+
+    // Persist to backend SQLite
+    invoicingApi.confirmInvoice(id).catch((err) =>
+      console.error('[Invoicing] Backend confirm invoice failed:', err)
+    );
+
     return success;
   }, [selectedInvoice]);
 
@@ -364,6 +416,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return updated;
       })
     );
+
+    // Persist to backend SQLite
+    invoicingApi.cancelInvoice(id).catch((err) =>
+      console.error('[Invoicing] Backend cancel invoice failed:', err)
+    );
+
     return success;
   }, [selectedInvoice]);
 
@@ -383,6 +441,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return updated;
       })
     );
+
+    // Persist to backend SQLite
+    invoicingApi.sendInvoice(id).catch((err) =>
+      console.error('[Invoicing] Backend send invoice failed:', err)
+    );
+
     return success;
   }, [selectedInvoice]);
 
@@ -403,6 +467,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return updated;
       })
     );
+
+    // Persist to backend SQLite
+    invoicingApi.markPaid(id).catch((err) =>
+      console.error('[Invoicing] Backend mark paid failed:', err)
+    );
+
     return success;
   }, [selectedInvoice]);
 
@@ -449,6 +519,12 @@ export const InvoicingProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     setInvoices((prev) => [newInvoice, ...prev]);
     setSelectedInvoice(newInvoice);
+
+    // Persist to backend SQLite
+    invoicingApi.createInvoice(newInvoice).catch((err) =>
+      console.error('[Invoicing] Backend invoice creation failed:', err)
+    );
+
     return newInvoice;
   }, []);
 

@@ -92,7 +92,7 @@ export const CashFlowChartWidget: React.FC = () => {
   const activePoint = activeHoverIndex !== null ? points[activeHoverIndex] : points[3]; // Default to April
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-6 transition-all relative overflow-hidden">
+    <div className="hover-lift bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-6 transition-all relative overflow-hidden">
       {/* Top Header Row */}
       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
         <div className="flex items-center gap-2 relative">
@@ -125,20 +125,20 @@ export const CashFlowChartWidget: React.FC = () => {
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+            className="btn-tactile p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
             aria-label="Options"
           >
             <MoreHorizontal className="w-5 h-5" />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-30 text-xs">
+            <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-30 text-xs animate-modal-pop">
               <button
                 onClick={() => {
                   setMenuOpen(false);
                   window.print();
                 }}
-                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer transition-colors"
               >
                 <Download className="w-4 h-4 text-slate-400" />
                 <span>Export Cash Flow PDF</span>
@@ -148,7 +148,7 @@ export const CashFlowChartWidget: React.FC = () => {
                   setMenuOpen(false);
                   alert('Exported 12-Month Cash Flow statement CSV.');
                 }}
-                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer transition-colors"
               >
                 <FileSpreadsheet className="w-4 h-4 text-slate-400" />
                 <span>Download CSV Ledger</span>
@@ -159,7 +159,7 @@ export const CashFlowChartWidget: React.FC = () => {
                   setMenuOpen(false);
                   setActiveHoverIndex(3);
                 }}
-                className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 font-medium flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-indigo-600 hover:bg-indigo-50 font-medium flex items-center gap-2 cursor-pointer transition-colors"
               >
                 <Calendar className="w-4 h-4" />
                 <span>Reset to Baseline (04/01/2019)</span>

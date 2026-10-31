@@ -59,7 +59,7 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="mt-6 flex flex-wrap items-center gap-3 relative z-10 text-xs">
           <button
             onClick={() => setIsProductModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-indigo-950 font-bold hover:bg-purple-50 transition-colors shadow-xs cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-indigo-950 font-bold hover:bg-purple-50 transition-all shadow-md shadow-black/10 cursor-pointer"
           >
             <Plus className="w-4 h-4 text-indigo-600" />
             <span>Create Product</span>
@@ -67,7 +67,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => setIsPlanModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-600/80 hover:bg-purple-600 border border-purple-400/40 text-white font-bold transition-colors cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-600/80 hover:bg-purple-600 border border-purple-400/40 text-white font-bold transition-all shadow-md shadow-purple-900/30 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Configure Plan</span>
@@ -75,7 +75,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={() => setIsDiscountModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600/80 hover:bg-amber-600 border border-amber-400/40 text-white font-bold transition-colors cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600/80 hover:bg-amber-600 border border-amber-400/40 text-white font-bold transition-all shadow-md shadow-amber-900/30 cursor-pointer"
           >
             <Percent className="w-4 h-4" />
             <span>New Discount Rule</span>
@@ -83,7 +83,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <Link
             to="/admin/invoices"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-colors"
+            className="btn-tactile inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium transition-all"
           >
             <Receipt className="w-4 h-4" />
             <span>Audit Invoices ({invoices.length})</span>
@@ -93,48 +93,56 @@ export const AdminDashboardPage: React.FC = () => {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-medium">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium">
             <span>Catalog Products</span>
-            <Package className="w-4 h-4 text-indigo-600" />
+            <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Package className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{products.length} Items</div>
-          <div className="flex items-center gap-1 text-xs text-indigo-600 mt-1 font-medium">
+          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">{products.length} Items</div>
+          <div className="flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">
             <span>{brandMarkups.length} brand markup tiers (+560)</span>
           </div>
         </div>
 
-        <div className="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-medium">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium">
             <span>Subscription Plans</span>
-            <CalendarDays className="w-4 h-4 text-purple-600" />
+            <div className="p-2 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <CalendarDays className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{plans.length} Cadences</div>
-          <div className="text-xs text-purple-600 mt-1 font-medium">
+          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">{plans.length} Cadences</div>
+          <div className="text-xs text-purple-600 dark:text-purple-400 mt-1 font-medium">
             Daily, Weekly, Monthly, Yearly
           </div>
         </div>
 
-        <div className="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-medium">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium">
             <span>Active Discount Rules</span>
-            <Percent className="w-4 h-4 text-amber-600" />
+            <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Percent className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2">{discountRules.length} Rules</div>
-          <div className="text-xs text-amber-600 mt-1 font-medium">
+          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">{discountRules.length} Rules</div>
+          <div className="text-xs text-amber-600 dark:text-amber-400 mt-1 font-medium">
             Fixed ($) & Percentage (%) tiers
           </div>
         </div>
 
-        <div className="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-medium">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium">
             <span>Total Invoiced</span>
-            <Receipt className="w-4 h-4 text-emerald-600" />
+            <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Receipt className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-2xl font-bold text-slate-900 mt-2 font-mono">
+          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2 font-mono">
             ${Math.round(totalInvoicedAmount).toLocaleString()}
           </div>
-          <div className="text-xs text-emerald-600 mt-1 font-medium">
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-medium">
             {paidInvoicesCount} settled invoices
           </div>
         </div>

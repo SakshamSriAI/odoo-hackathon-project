@@ -95,12 +95,12 @@ export const FinanceLeadDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded uppercase tracking-wider badge-interactive">
               Executive Finance View
             </span>
             <span className="text-xs text-slate-400">•</span>
@@ -111,119 +111,119 @@ export const FinanceLeadDashboardPage: React.FC = () => {
           </h2>
         </div>
 
-        {/* Real-Time Performance Benchmark Indicator (Phase 5 Requirement: Responds < 2 seconds) */}
-        <div className="p-3 bg-white rounded-xl border border-emerald-200 shadow-2xs flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+        {/* Real-Time Performance Latency Telemetry */}
+        <div className="hover-lift p-3 bg-white dark:bg-slate-900 rounded-xl border border-emerald-200 dark:border-emerald-800/60 shadow-2xs flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 live-dot-pulse">
             <Gauge className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-[11px] font-bold text-emerald-950 flex items-center gap-1.5">
-              <span>Optimization Benchmark:</span>
-              <span className="text-emerald-600 font-mono font-bold">
+            <div className="text-[11px] font-bold text-emerald-950 dark:text-emerald-200 flex items-center gap-1.5">
+              <span>Telemetry Latency:</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">
                 {filterLatencyMs} ms
               </span>
             </div>
-            <div className="text-[10px] text-slate-400">
-              Filtering <strong>{combinedDataset.length.toLocaleString()} subscriptions</strong> (Target: &lt; 2,000 ms)
+            <div className="text-[10px] text-slate-400 dark:text-slate-500">
+              Aggregating <strong>{combinedDataset.length.toLocaleString()} subscriptions</strong> in real time
             </div>
           </div>
         </div>
       </div>
 
-      {/* Primary High-Level Summary Widgets (Phase 5 Requirement) */}
+      {/* Primary High-Level Summary Widgets */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Widget 1: Active Subscriptions */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold">
+        <div className="hover-lift card-shine group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold">
             <span>Active Subscriptions</span>
-            <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-black text-slate-900 font-mono">
+            <div className="text-3xl font-black text-slate-900 dark:text-white font-mono">
               {financeKPIs.activeSubscriptionsCount.toLocaleString()}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-emerald-700 mt-1 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 mt-1 font-medium">
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>98.4% Net Revenue Retention (NRR)</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 dark:text-slate-500">
             Estimated MRR: <strong>${financeKPIs.monthlyRecurringRevenue.toLocaleString()} / mo</strong>
           </div>
         </div>
 
         {/* Widget 2: Total Revenue */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold">
+        <div className="hover-lift card-shine group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold">
             <span>Total Revenue</span>
-            <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-black text-slate-900 font-mono">
+            <div className="text-3xl font-black text-slate-900 dark:text-white font-mono">
               ${Math.round(financeKPIs.totalRevenue).toLocaleString()}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-indigo-700 mt-1 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-indigo-700 dark:text-indigo-300 mt-1 font-medium">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Across all subscriber contracts</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 dark:text-slate-500">
             Avg Contract Value: <strong>${financeKPIs.averageContractValue.toLocaleString()}</strong>
           </div>
         </div>
 
         {/* Widget 3: Payments Collected */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold">
+        <div className="hover-lift card-shine group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold">
             <span>Payments Collected</span>
-            <div className="p-2 rounded-xl bg-teal-50 text-teal-600">
+            <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <CreditCard className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-black text-slate-900 font-mono">
+            <div className="text-3xl font-black text-slate-900 dark:text-white font-mono">
               ${Math.round(financeKPIs.paymentsCollected).toLocaleString()}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-teal-700 mt-1 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-teal-700 dark:text-teal-300 mt-1 font-medium">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>{financeKPIs.collectionRatePercent}% Collection Efficiency</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 dark:text-slate-500">
             Verified in bank settlement ledger
           </div>
         </div>
 
         {/* Widget 4: Overdue Invoices */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold">
+        <div className="hover-lift card-shine group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-semibold">
             <span>Overdue Invoices</span>
-            <div className="p-2 rounded-xl bg-rose-50 text-rose-600">
+            <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-black text-slate-900 font-mono">
+            <div className="text-3xl font-black text-slate-900 dark:text-white font-mono">
               {financeKPIs.overdueInvoicesCount}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-rose-700 mt-1 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-rose-700 dark:text-rose-400 mt-1 font-medium">
               <span>${Math.round(financeKPIs.overdueAmount).toLocaleString()} past due</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 dark:text-slate-500">
             Average aging: <strong>18 days past due</strong>
           </div>
         </div>
       </div>
 
-      {/* Cash Flow Telemetry Card (Added per design specification) */}
+      {/* Cash Flow Telemetry Card */}
       <CashFlowChartWidget />
 
-      {/* Robust Filtering Suite (Phase 5 Requirement) */}
+      {/* Robust Multi-Dimensional Filter Controls */}
       <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
@@ -251,7 +251,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="Company, name, or sub #..."
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
           </div>
@@ -267,7 +267,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-all"
             >
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
@@ -289,7 +289,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
                 setCadenceFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-all"
             >
               <option value="all">All Cadences</option>
               <option value="yearly">Yearly (Annual)</option>
@@ -320,7 +320,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Optimized Paginated Enterprise Subscriptions Data Table (Phase 5 Requirement) */}
+      {/* Optimized Paginated Enterprise Subscriptions Data Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -341,7 +341,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
                 setPageSize(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="px-2.5 py-1 rounded-lg border border-slate-300 bg-white font-medium"
+              className="px-2.5 py-1 rounded-lg border border-slate-300 bg-white font-medium cursor-pointer"
             >
               <option value="10">10</option>
               <option value="25">25</option>
@@ -374,7 +374,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
                 </tr>
               ) : (
                 paginatedRecords.map((sub) => (
-                  <tr key={sub.id} className="hover:bg-slate-50/60 transition-colors">
+                  <tr key={sub.id} className="interactive-row">
                     <td className="py-3 px-4 font-mono font-bold text-indigo-600">
                       {sub.id}
                     </td>
@@ -393,7 +393,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
 
                     <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
+                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border badge-interactive ${
                           statusBadges[sub.status]?.color || 'bg-slate-100 text-slate-700'
                         }`}
                       >
@@ -431,7 +431,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="btn-tactile p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -443,7 +443,7 @@ export const FinanceLeadDashboardPage: React.FC = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="btn-tactile p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

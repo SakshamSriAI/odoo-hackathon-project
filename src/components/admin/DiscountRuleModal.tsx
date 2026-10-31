@@ -135,16 +135,16 @@ export const DiscountRuleModal: React.FC<DiscountRuleModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-modal-pop">
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded uppercase">
-                Phase 4 Feature
+                Pricing & Promos
               </span>
               <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs text-slate-500 font-medium">Admin Discount Engine</span>
+              <span className="text-xs text-slate-500 font-medium">Discount Engine</span>
             </div>
             <h3 className="text-lg font-bold text-slate-900 mt-1">
               {ruleToEdit ? 'Configure Discount Rule' : 'Create New Discount Rule'}
@@ -152,7 +152,7 @@ export const DiscountRuleModal: React.FC<DiscountRuleModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -365,13 +365,13 @@ export const DiscountRuleModal: React.FC<DiscountRuleModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+              className="btn-tactile px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-md shadow-amber-500/20 flex items-center gap-2 transition-all cursor-pointer"
+              className="btn-tactile px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-md shadow-amber-500/20 flex items-center gap-2 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>{ruleToEdit ? 'Save Changes' : 'Activate Discount Rule'}</span>
