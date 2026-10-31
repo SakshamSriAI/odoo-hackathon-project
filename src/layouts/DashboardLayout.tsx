@@ -26,6 +26,8 @@ import {
   Clock,
   ExternalLink,
   TrendingUp,
+  Headphones,
+  ArrowRight,
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -352,6 +354,28 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Customer Portal Sidebar Support Card (from design reference) */}
+          {portalRole === 'customer' && (
+            <div className="p-4 m-3 bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-2xl border border-emerald-200/80">
+              <div className="flex items-center gap-2 mb-1 text-slate-800 font-bold text-xs">
+                <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <Headphones className="w-3.5 h-3.5" />
+                </div>
+                <span>Need Help?</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mb-3 leading-relaxed">
+                Our support team is here for you.
+              </p>
+              <a
+                href="mailto:support@brightloop.io"
+                className="w-full py-1.5 px-3 rounded-xl bg-white border border-emerald-300 text-emerald-800 text-xs font-semibold hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+              >
+                <span>Contact Support</span>
+                <ArrowRight className="w-3 h-3" />
+              </a>
+            </div>
+          )}
 
           {/* Development Phase Status Widget in Sidebar (Internal only - hidden for customer portal) */}
           {portalRole !== 'customer' && (
