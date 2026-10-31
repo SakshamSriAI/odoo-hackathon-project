@@ -76,7 +76,7 @@ export const PlansPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -91,7 +91,7 @@ export const PlansPage: React.FC = () => {
             setPlanToEdit(null);
             setIsPlanModalOpen(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
+          className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Plan</span>
@@ -108,7 +108,7 @@ export const PlansPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search plans by name or code..."
-            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-indigo-500 transition-all"
           />
         </div>
 
@@ -116,7 +116,7 @@ export const PlansPage: React.FC = () => {
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setSelectedFreq('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               selectedFreq === 'all'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -126,7 +126,7 @@ export const PlansPage: React.FC = () => {
           </button>
           <button
             onClick={() => setSelectedFreq('daily')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               selectedFreq === 'daily'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -136,7 +136,7 @@ export const PlansPage: React.FC = () => {
           </button>
           <button
             onClick={() => setSelectedFreq('weekly')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               selectedFreq === 'weekly'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -146,7 +146,7 @@ export const PlansPage: React.FC = () => {
           </button>
           <button
             onClick={() => setSelectedFreq('monthly')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               selectedFreq === 'monthly'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -156,7 +156,7 @@ export const PlansPage: React.FC = () => {
           </button>
           <button
             onClick={() => setSelectedFreq('yearly')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`btn-tactile px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
               selectedFreq === 'yearly'
                 ? 'bg-indigo-600 text-white font-semibold'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -183,7 +183,7 @@ export const PlansPage: React.FC = () => {
             return (
               <div
                 key={plan.id}
-                className="bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 transition-all p-5 flex flex-col justify-between space-y-4"
+                className="hover-lift card-shine bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-500 transition-all p-5 flex flex-col justify-between space-y-4 group"
               >
                 {/* Header */}
                 <div>
@@ -191,7 +191,7 @@ export const PlansPage: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2">
                         <span
-                          className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                          className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border badge-interactive ${
                             frequencyBadges[plan.billingFrequency].color
                           }`}
                         >
@@ -201,7 +201,7 @@ export const PlansPage: React.FC = () => {
                           {plan.code}
                         </span>
                       </div>
-                      <h3 className="text-base font-bold text-slate-900 mt-1.5">
+                      <h3 className="text-base font-bold text-slate-900 mt-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                         {plan.name}
                       </h3>
                     </div>
@@ -212,14 +212,14 @@ export const PlansPage: React.FC = () => {
                           setPlanToEdit(plan);
                           setIsPlanModalOpen(true);
                         }}
-                        className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                        className="btn-tactile p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                         title="Edit Plan"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(plan)}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        className="btn-tactile p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                         title="Delete Plan"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -273,7 +273,7 @@ export const PlansPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggle(plan, 'autoCloseOnExpiration')}
-                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
+                      className={`btn-tactile p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
                         plan.policies.autoCloseOnExpiration
                           ? 'bg-purple-50 border-purple-200 text-purple-900'
                           : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
@@ -295,7 +295,7 @@ export const PlansPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggle(plan, 'allowPause')}
-                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
+                      className={`btn-tactile p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
                         plan.policies.allowPause
                           ? 'bg-blue-50 border-blue-200 text-blue-900'
                           : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
@@ -317,7 +317,7 @@ export const PlansPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggle(plan, 'allowRenewal')}
-                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
+                      className={`btn-tactile p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
                         plan.policies.allowRenewal
                           ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
                           : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
@@ -339,7 +339,7 @@ export const PlansPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleToggle(plan, 'allowEarlyClosure')}
-                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
+                      className={`btn-tactile p-2.5 rounded-xl border text-left flex items-center justify-between transition-colors cursor-pointer ${
                         plan.policies.allowEarlyClosure
                           ? 'bg-amber-50 border-amber-200 text-amber-900'
                           : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
@@ -371,7 +371,7 @@ export const PlansPage: React.FC = () => {
                       bundledProducts.map((p) => (
                         <span
                           key={p.id}
-                          className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium"
+                          className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-medium badge-interactive"
                         >
                           {p.name}
                         </span>

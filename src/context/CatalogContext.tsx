@@ -7,6 +7,7 @@ import {
   BillingFrequency,
   PlanPolicyToggles,
 } from '../types/catalog';
+import { catalogApi } from '../services/api';
 
 export const DEFAULT_BRAND_MARKUPS: BrandMarkupOption[] = [
   {
@@ -277,7 +278,39 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   });
 
-  // Persist state changes
+  // Initial server fetch to synchronize with SQLite backend
+  useEffect(() => {
+    let isMounted = true;
+    catalogApi.getProducts()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+        }
+      })
+      .catch((err) => console.warn('[Catalog] Using cached products:', err.message));
+
+    catalogApi.getPlans()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setPlans(data);
+        }
+      })
+      .catch((err) => console.warn('[Catalog] Using cached plans:', err.message));
+
+    catalogApi.getMarkups()
+      .then((data) => {
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setBrandMarkups(data);
+        }
+      })
+      .catch((err) => console.warn('[Catalog] Using cached markups:', err.message));
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Persist state changes to localStorage cache
   useEffect(() => {
     localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
   }, [products]);
@@ -328,6 +361,12 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
       };
 
       setProducts((prev) => [newProduct, ...prev]);
+
+      // Sync with backend SQLite
+      catalogApi.createProduct(newProduct).catch((err) =>
+        console.error('[Catalog] Backend product creation error:', err)
+      );
+
       return newProduct;
     },
     [brandMarkups]
@@ -358,10 +397,19 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return updated;
       })
     );
+
+    // Sync with backend SQLite
+    catalogApi.updateProduct(id, updates).catch((err) =>
+      console.error('[Catalog] Backend product update error:', err)
+    );
   }, []);
 
   const deleteProduct = useCallback((id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    // Sync with backend SQLite
+    catalogApi.deleteProduct(id).catch((err) =>
+      console.error('[Catalog] Backend product delete error:', err)
+    );
   }, []);
 
   const addVariantToProduct = useCallback(
@@ -402,6 +450,18 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
         })
       );
 
+      // Sync with backend SQLite
+      if (brand) {
+        catalogApi.addVariant(productId, {
+          brandId: brand.id,
+          brandName: brand.name,
+          markupAmount,
+          notes: customNotes,
+        }).catch((err) =>
+          console.error('[Catalog] Backend variant addition error:', err)
+        );
+      }
+
       return createdVariant;
     },
     [brandMarkups]
@@ -418,6 +478,11 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
         };
       })
     );
+
+    // Sync with backend SQLite
+    catalogApi.deleteVariant(productId, variantId).catch((err) =>
+      console.error('[Catalog] Backend variant removal error:', err)
+    );
   }, []);
 
   // Plan Operations
@@ -431,6 +496,12 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
       updatedAt: now,
     };
     setPlans((prev) => [newPlan, ...prev]);
+
+    // Sync with backend SQLite
+    catalogApi.createPlan(newPlan).catch((err) =>
+      console.error('[Catalog] Backend plan creation error:', err)
+    );
+
     return newPlan;
   }, []);
 
@@ -440,10 +511,20 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
         plan.id === id ? { ...plan, ...updates, updatedAt: new Date().toISOString() } : plan
       )
     );
+
+    // Sync with backend SQLite
+    catalogApi.updatePlan(id, updates).catch((err) =>
+      console.error('[Catalog] Backend plan update error:', err)
+    );
   }, []);
 
   const deletePlan = useCallback((id: string) => {
     setPlans((prev) => prev.filter((p) => p.id !== id));
+
+    // Sync with backend SQLite
+    catalogApi.deletePlan(id).catch((err) =>
+      console.error('[Catalog] Backend plan delete error:', err)
+    );
   }, []);
 
   const togglePlanPolicy = useCallback((planId: string, policyKey: keyof PlanPolicyToggles) => {
@@ -459,6 +540,11 @@ export const CatalogProvider: React.FC<{ children: React.ReactNode }> = ({ child
           updatedAt: new Date().toISOString(),
         };
       })
+    );
+
+    // Sync with backend SQLite
+    catalogApi.togglePlanPolicy(planId, policyKey).catch((err) =>
+      console.error('[Catalog] Backend policy toggle error:', err)
     );
   }, []);
 

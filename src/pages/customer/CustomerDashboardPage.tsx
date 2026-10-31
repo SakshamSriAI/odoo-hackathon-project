@@ -113,7 +113,7 @@ export const CustomerDashboardPage: React.FC = () => {
           <div className="relative shrink-0 flex items-center justify-center pr-2">
             <svg
               viewBox="0 0 160 160"
-              className="w-32 h-32 md:w-36 md:h-36 drop-shadow-2xl"
+              className="w-32 h-32 md:w-36 md:h-36 drop-shadow-2xl animate-float"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -170,44 +170,44 @@ export const CustomerDashboardPage: React.FC = () => {
       {/* 2. Top 3 KPI Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Card 1: Active Subscriptions */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center gap-4 cursor-pointer">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shrink-0">
             <Box className="w-6 h-6" />
           </div>
           <div className="space-y-0.5">
-            <div className="text-2xl font-black text-slate-900 leading-none">2</div>
-            <div className="text-xs text-slate-500 font-medium">Active Subscriptions</div>
-            <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 pt-0.5">
+            <div className="text-2xl font-black text-slate-900 dark:text-white leading-none">2</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Active Subscriptions</div>
+            <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 pt-0.5">
               <span>↗ +0%</span>
             </div>
           </div>
         </div>
 
         {/* Card 2: Next Billing Date */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20 shrink-0">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center gap-4 cursor-pointer">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shrink-0">
             <Calendar className="w-6 h-6" />
           </div>
           <div className="space-y-0.5">
-            <div className="text-xl font-black text-slate-900 leading-none">Nov 01, 2026</div>
-            <div className="text-xs text-slate-500 font-medium">Next Billing Date</div>
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-600 pt-0.5">
-              <span className="w-2 h-2 rounded-full bg-indigo-600" />
+            <div className="text-xl font-black text-slate-900 dark:text-white leading-none">Nov 01, 2026</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Next Billing Date</div>
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 pt-0.5">
+              <span className="w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400" />
               <span>In 36 days</span>
             </div>
           </div>
         </div>
 
         {/* Card 3: Default Payment Method */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-emerald-700 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-emerald-700/20 shrink-0">
+        <div className="hover-lift group p-5 bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center gap-4 cursor-pointer">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-emerald-700 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-emerald-700/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shrink-0">
             <CreditCard className="w-6 h-6" />
           </div>
           <div className="space-y-0.5">
-            <div className="text-xl font-black text-slate-900 leading-none">Visa •••• 4242</div>
-            <div className="text-xs text-slate-500 font-medium">Default Payment Method</div>
-            <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 pt-0.5">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+            <div className="text-xl font-black text-slate-900 dark:text-white leading-none">Visa •••• 4242</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Default Payment Method</div>
+            <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 pt-0.5">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
               <span>Auto-Renew Configured</span>
             </div>
           </div>

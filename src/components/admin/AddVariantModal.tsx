@@ -56,19 +56,19 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-lg w-full transition-colors">
         {/* Header */}
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Add Brand Product Variant</h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Target Product: <strong className="text-indigo-600">{product.name}</strong>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Add Brand Product Variant</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Target Product: <strong className="text-indigo-600 dark:text-indigo-400">{product.name}</strong>
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -78,7 +78,7 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {/* Brand Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
               Select Brand Variant Tier *
             </label>
             <select
@@ -87,7 +87,7 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
                 setSelectedBrandId(e.target.value);
                 setCustomMarkup('');
               }}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500"
             >
               {brandMarkups.map((brand) => (
                 <option key={brand.id} value={brand.id}>
@@ -99,8 +99,8 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
 
           {/* Optional Override Markup */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-              Brand Markup Amount ($ USD)
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
+              Custom Markup Amount ($ USD)
             </label>
             <div className="relative">
               <DollarSign className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -108,41 +108,35 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
                 type="number"
                 min="0"
                 step="10"
-                placeholder={`Default: ${currentBrand?.markupAmount || 560}`}
                 value={customMarkup}
                 onChange={(e) =>
                   setCustomMarkup(e.target.value === '' ? '' : Number(e.target.value))
                 }
-                className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500"
+                placeholder={`Leave blank to use preset +$${currentBrand.markupAmount}`}
+                className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">
-              Leave blank to use preset brand markup (+${currentBrand?.markupAmount || 560})
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
+              Active Markup: <strong className="text-indigo-600 dark:text-indigo-400">+${effectiveMarkup}</strong>
             </p>
           </div>
 
-          {/* Markup Live Calculation Preview */}
-          <div className="p-3.5 bg-indigo-50/70 rounded-xl border border-indigo-200 text-xs space-y-2">
-            <div className="flex items-center gap-1.5 font-bold text-indigo-900">
-              <Calculator className="w-4 h-4 text-indigo-600" />
-              <span>Variant Pricing Breakdown</span>
+          {/* Real-time Financial Preview Box */}
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-800 text-xs space-y-1.5">
+            <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+              <span>Base Product Price:</span>
+              <span className="font-mono text-slate-900 dark:text-slate-200">${product.salesPrice.toLocaleString()}</span>
             </div>
-            <div className="flex items-center justify-between text-slate-600">
-              <span>Base Product Sales Price:</span>
-              <span className="font-mono font-medium">${product.salesPrice.toLocaleString()}</span>
-            </div>
-            <div className="flex items-center justify-between text-indigo-700 font-semibold">
-              <span>+ Brand Markup:</span>
+            <div className="flex items-center justify-between text-indigo-700 dark:text-indigo-300 font-semibold">
+              <span>Dynamic Variant Markup:</span>
               <span className="font-mono">+${effectiveMarkup.toLocaleString()}</span>
             </div>
-            <div className="pt-2 border-t border-indigo-200/80 flex items-center justify-between text-slate-900 font-bold">
-              <span>Final Variant Sales Price:</span>
-              <span className="font-mono text-sm text-indigo-700">
-                ${finalSalesPrice.toLocaleString()}
-              </span>
+            <div className="pt-1.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between font-bold text-slate-900 dark:text-white">
+              <span>New Variant Sales Price:</span>
+              <span className="font-mono text-indigo-700 dark:text-indigo-300 text-sm">${finalSalesPrice.toLocaleString()}</span>
             </div>
-            <div className="flex items-center justify-between text-[11px] text-emerald-700 font-medium">
-              <span>Projected Margin:</span>
+            <div className="flex items-center justify-between text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
+              <span>Variant Margin:</span>
               <span>
                 ${marginDollars.toLocaleString()} ({marginPercent}%)
               </span>
@@ -151,24 +145,24 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
 
           {/* Variant Notes */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
               Variant Notes (Optional)
             </label>
             <input
               type="text"
               value={variantNotes}
               onChange={(e) => setVariantNotes(e.target.value)}
-              placeholder="e.g. Includes dedicated OEM telemetry channel..."
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500"
+              placeholder="e.g. Includes dedicated 24/7 TAM routing"
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
-          {/* Submit */}
-          <div className="pt-2 flex items-center justify-end gap-2.5">
+          {/* Action Buttons */}
+          <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+              className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -177,7 +171,7 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
               className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" />
-              <span>Attach Brand Variant</span>
+              <span>Attach Variant</span>
             </button>
           </div>
         </form>

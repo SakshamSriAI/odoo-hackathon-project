@@ -21,31 +21,38 @@ const NotificationToastItem: React.FC<{
   onDismiss: () => void;
 }> = ({ item, onDismiss }) => {
   const icons = {
-    success: <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />,
-    error: <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />,
-    warning: <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />,
-    info: <Info className="w-5 h-5 text-indigo-600 shrink-0" />,
+    success: <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />,
+    error: <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" />,
+    warning: <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />,
+    info: <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0" />,
   };
 
-  const borders = {
-    success: 'border-emerald-200 bg-white shadow-emerald-900/5',
-    error: 'border-rose-200 bg-white shadow-rose-900/5',
-    warning: 'border-amber-200 bg-white shadow-amber-900/5',
-    info: 'border-indigo-200 bg-white shadow-indigo-900/5',
+  const accentBars = {
+    success: 'bg-emerald-500',
+    error: 'bg-rose-500',
+    warning: 'bg-amber-500',
+    info: 'bg-indigo-500',
   };
 
   return (
     <div
-      className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border shadow-lg transition-all animate-in slide-in-from-top-2 duration-200 ${borders[item.type]}`}
+      className="pointer-events-auto relative flex items-start gap-3 p-4 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-all duration-300 animate-in slide-in-from-top-3 fade-in overflow-hidden hover:scale-[1.01]"
     >
+      {/* Left Colored Accent Bar */}
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${accentBars[item.type]}`} />
+
       <div className="pt-0.5">{icons[item.type]}</div>
       <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-semibold text-slate-900 leading-tight">{item.title}</h4>
-        {item.message && <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{item.message}</p>}
+        <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{item.title}</h4>
+        {item.message && (
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+            {item.message}
+          </p>
+        )}
       </div>
       <button
         onClick={onDismiss}
-        className="text-slate-400 hover:text-slate-600 p-0.5 rounded transition-colors"
+        className="btn-tactile text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
         aria-label="Dismiss"
       >
         <X className="w-4 h-4" />

@@ -54,14 +54,14 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header Card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           {onBack && (
             <button
               onClick={onBack}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 mb-2 transition-colors cursor-pointer"
+              className="btn-tactile inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 mb-2 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Subscriptions Ledger</span>
@@ -74,13 +74,13 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
             </h2>
             <button
               onClick={handleCopyId}
-              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              className="btn-tactile p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
               title="Copy Subscription ID"
             >
               <Copy className="w-4 h-4" />
             </button>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-bold uppercase border ${
+              className={`px-3 py-1 rounded-full text-xs font-bold uppercase border badge-interactive ${
                 statusColors[subscription.status]
               }`}
             >
@@ -107,7 +107,7 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
         <div className="flex items-center gap-2 self-start md:self-auto">
           <button
             onClick={() => notify('info', 'Document Downloaded', `Generated formal quotation statement for ${subscription.id}.`)}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors"
+            className="btn-tactile inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Quotation PDF</span>
@@ -115,19 +115,19 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
         </div>
       </div>
 
-      {/* Visual Status Pipeline (Stepper) Component (Phase 3 Core Requirement) */}
+      {/* Visual Status Pipeline (Stepper) Component */}
       <SubscriptionPipelineStepper subscription={subscription} />
 
       {/* 2-Column Metadata Cards: Customer Details & Contract Terms */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Customer Details Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs space-y-4">
+        <div className="hover-lift bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
               <Building className="w-4 h-4 text-indigo-600" />
               <span>Customer & Subscriber Profile</span>
             </h3>
-            <span className="text-[10px] text-indigo-600 font-mono bg-indigo-50 px-2 py-0.5 rounded">
+            <span className="text-[10px] text-indigo-600 font-mono bg-indigo-50 px-2 py-0.5 rounded badge-interactive">
               Verified Account
             </span>
           </div>
@@ -186,13 +186,13 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
         </div>
 
         {/* Contract & Plan Terms Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs space-y-4">
+        <div className="hover-lift bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
               <Layers className="w-4 h-4 text-purple-600" />
               <span>Plan Type & Payment Terms</span>
             </h3>
-            <span className="text-[10px] text-purple-700 font-bold uppercase bg-purple-50 px-2 py-0.5 rounded">
+            <span className="text-[10px] text-purple-700 font-bold uppercase bg-purple-50 px-2 py-0.5 rounded badge-interactive">
               {subscription.planFrequency} Cadence
             </span>
           </div>
@@ -238,7 +238,7 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
         </div>
       </div>
 
-      {/* Itemized Product Lines Data Table (Phase 3 Core Requirement) */}
+      {/* Itemized Product Lines Data Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="p-5 border-b border-slate-200 flex items-center justify-between">
           <div>
@@ -249,7 +249,7 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
               Breakdown of subscribed software licenses, brand markups (+560), and automatically calculated taxes
             </p>
           </div>
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-700">
+          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-700 badge-interactive">
             {subscription.itemizedLines.length} Itemized Product(s)
           </span>
         </div>
@@ -269,7 +269,7 @@ export const SubscriptionDetailsView: React.FC<SubscriptionDetailsViewProps> = (
             </thead>
             <tbody className="divide-y divide-slate-100">
               {subscription.itemizedLines.map((line, idx) => (
-                <tr key={line.id} className="hover:bg-slate-50/50 transition-colors">
+                <tr key={line.id} className="interactive-row">
                   <td className="py-3.5 px-4">
                     <div className="font-bold text-slate-900">{line.productName}</div>
                     <div className="text-[11px] text-indigo-600 font-semibold mt-0.5">

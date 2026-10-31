@@ -1,30 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Zap, Layers, RefreshCw, Sparkles } from 'lucide-react';
+import { ShieldCheck, Zap, Layers, RefreshCw, Sparkles, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import { NotificationToastContainer } from '../components/common/NotificationToast';
 
 export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { toggleTheme, isDark } = useTheme();
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 flex flex-col justify-between transition-colors duration-200">
       <NotificationToastContainer />
+
+      {/* Top Floating Theme Switcher */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          onClick={toggleTheme}
+          className="btn-tactile p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer shadow-sm flex items-center justify-center"
+          title={isDark ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+          aria-label="Toggle Theme"
+        >
+          {isDark ? (
+            <Sun className="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" />
+          ) : (
+            <Moon className="w-4 h-4 text-slate-600 transition-transform duration-300 hover:-rotate-12" />
+          )}
+        </button>
+      </div>
 
       <main className="flex-1 flex flex-col lg:flex-row">
         {/* Left Hero Brand Panel (visible on lg screens) */}
-        <div className="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white p-12 flex-col justify-between relative overflow-hidden border-r border-indigo-950">
+        <div className="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white p-12 flex-col justify-between relative overflow-hidden border-r border-indigo-950/60 card-shine">
           {/* Ambient Glow Effects */}
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none animate-float" />
           <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
 
           {/* Top Brand Logo */}
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 group-hover:rotate-12 transition-transform duration-300">
                 <RefreshCw className="w-5 h-5 text-white" />
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-xl tracking-tight text-white flex items-center gap-1.5">
                   Brightloop
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 font-medium">
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 font-medium badge-interactive">
                     Software
                   </span>
                 </span>
@@ -95,15 +114,15 @@ export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
         {/* Right Form Container */}
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md animate-fade-in-up">
             {/* Mobile Header */}
             <div className="lg:hidden flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
                 <RefreshCw className="w-5 h-5" />
               </div>
               <div>
-                <span className="font-bold text-lg text-slate-900">Brightloop Software</span>
-                <p className="text-xs text-slate-500">Subscription Management System</p>
+                <span className="font-bold text-lg text-slate-900 dark:text-white">Brightloop Software</span>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Subscription Management System</p>
               </div>
             </div>
 
@@ -113,14 +132,14 @@ export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       </main>
 
       {/* Global Bottom Bar */}
-      <footer className="py-4 px-6 border-t border-slate-200 bg-white text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <footer className="py-4 px-6 border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0D1322] text-center text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2 transition-colors">
         <p>© 2026 Brightloop Software Inc. All rights reserved.</p>
-        <div className="flex items-center gap-4 text-slate-400">
-          <span className="hover:text-slate-600 cursor-pointer">Privacy Policy</span>
+        <div className="flex items-center gap-4 text-slate-400 dark:text-slate-500">
+          <span className="hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">Privacy Policy</span>
           <span>•</span>
-          <span className="hover:text-slate-600 cursor-pointer">Terms of Service</span>
+          <span className="hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">Terms of Service</span>
           <span>•</span>
-          <span className="hover:text-slate-600 cursor-pointer">Security Portal</span>
+          <span className="hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">Security Portal</span>
         </div>
       </footer>
     </div>

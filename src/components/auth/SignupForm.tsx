@@ -1,21 +1,18 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
+import { UserRole } from '../../types/auth';
 import { validatePassword, validateEmail } from '../../utils/validation';
 import { PasswordValidator } from './PasswordValidator';
-import { UserRole } from '../../types/auth';
 import {
-  User as UserIcon,
   Mail,
-  Building,
   Lock,
+  User as UserIcon,
+  Building,
   Eye,
   EyeOff,
   ArrowRight,
-  Shield,
-  Briefcase,
-  Users,
   CheckCircle,
 } from 'lucide-react';
 
@@ -31,15 +28,13 @@ export const SignupForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [agreeTerms, setAgreeTerms] = useState(true);
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
-  // Real-time validation computation
-  const passwordValidation = useMemo(() => validatePassword(password), [password]);
+  const passwordValidation = validatePassword(password);
+  const isEmailValid = validateEmail(email);
   const passwordsMatch = password.length > 0 && password === confirmPassword;
-  const isEmailValid = email.length > 0 && validateEmail(email);
-
   const canSubmit =
-    name.trim().length > 1 &&
+    Boolean(name.trim()) &&
     isEmailValid &&
     passwordValidation.isValid &&
     passwordsMatch &&
@@ -99,10 +94,10 @@ export const SignupForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80">
+    <div className="bg-white dark:bg-[#111827] p-8 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-black/70 border border-slate-200/80 dark:border-slate-800 transition-colors">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Create your account</h2>
-        <p className="text-sm text-slate-500 mt-1">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Create your account</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Join Brightloop Software for intelligent subscription management
         </p>
       </div>
@@ -111,7 +106,7 @@ export const SignupForm: React.FC = () => {
         {/* Name & Role */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="signup-name">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="signup-name">
               Full Name *
             </label>
             <div className="relative">
@@ -122,21 +117,21 @@ export const SignupForm: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Eleanor Vance"
-                className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400"
+                className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Portal Account Type *
             </label>
             <div className="relative">
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full pl-3.5 pr-8 py-2 rounded-xl border border-slate-300 text-sm bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full pl-3.5 pr-8 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-sm bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="customer">Customer (Subscriber)</option>
                 <option value="staff">Internal Staff (Sales/Ops)</option>
@@ -148,7 +143,7 @@ export const SignupForm: React.FC = () => {
 
         {/* Work Email */}
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="signup-email">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="signup-email">
             Work Email Address *
           </label>
           <div className="relative">
@@ -159,10 +154,10 @@ export const SignupForm: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="eleanor@company.com"
-              className={`w-full pl-10 pr-3.5 py-2 rounded-xl border text-sm focus:ring-2 focus:outline-none placeholder:text-slate-400 ${
+              className={`w-full pl-10 pr-3.5 py-2 rounded-xl border bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 ${
                 email && !isEmailValid
-                  ? 'border-rose-300 focus:ring-rose-500'
-                  : 'border-slate-300 focus:ring-indigo-500'
+                  ? 'border-rose-300 dark:border-rose-500 focus:ring-rose-500'
+                  : 'border-slate-300 dark:border-slate-700 focus:ring-indigo-500'
               }`}
               required
             />
@@ -174,7 +169,7 @@ export const SignupForm: React.FC = () => {
 
         {/* Company / Organization */}
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="signup-org">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="signup-org">
             Company or Organization
           </label>
           <div className="relative">
@@ -185,14 +180,14 @@ export const SignupForm: React.FC = () => {
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
               placeholder="Vance Robotics Ltd."
-              className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400"
+              className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </div>
 
         {/* Password */}
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="signup-password">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="signup-password">
             Password *
           </label>
           <div className="relative">
@@ -203,19 +198,19 @@ export const SignupForm: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter strong password (> 8 chars)"
-              className={`w-full pl-10 pr-10 py-2 rounded-xl border text-sm focus:ring-2 focus:outline-none placeholder:text-slate-400 ${
+              className={`w-full pl-10 pr-10 py-2 rounded-xl border bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 ${
                 password.length > 0 && !passwordValidation.isValid
-                  ? 'border-amber-400 focus:ring-amber-500'
+                  ? 'border-amber-400 dark:border-amber-500 focus:ring-amber-500'
                   : passwordValidation.isValid
-                  ? 'border-emerald-500 focus:ring-emerald-500'
-                  : 'border-slate-300 focus:ring-indigo-500'
+                  ? 'border-emerald-500 dark:border-emerald-500 focus:ring-emerald-500'
+                  : 'border-slate-300 dark:border-slate-700 focus:ring-indigo-500'
               }`}
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -227,7 +222,7 @@ export const SignupForm: React.FC = () => {
 
         {/* Confirm Password */}
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="signup-confirm">
+          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5" htmlFor="signup-confirm">
             Confirm Password *
           </label>
           <div className="relative">
@@ -238,17 +233,17 @@ export const SignupForm: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter your password"
-              className={`w-full pl-10 pr-10 py-2 rounded-xl border text-sm focus:ring-2 focus:outline-none placeholder:text-slate-400 ${
+              className={`w-full pl-10 pr-10 py-2 rounded-xl border bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:ring-2 focus:outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 ${
                 confirmPassword.length > 0 && !passwordsMatch
-                  ? 'border-rose-400 focus:ring-rose-500'
+                  ? 'border-rose-400 dark:border-rose-500 focus:ring-rose-500'
                   : passwordsMatch
-                  ? 'border-emerald-500 focus:ring-emerald-500'
-                  : 'border-slate-300 focus:ring-indigo-500'
+                  ? 'border-emerald-500 dark:border-emerald-500 focus:ring-emerald-500'
+                  : 'border-slate-300 dark:border-slate-700 focus:ring-indigo-500'
               }`}
               required
             />
             {passwordsMatch && (
-              <CheckCircle className="w-4 h-4 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
             )}
           </div>
           {confirmPassword.length > 0 && !passwordsMatch && (
@@ -258,12 +253,12 @@ export const SignupForm: React.FC = () => {
 
         {/* Terms agreement */}
         <div className="pt-1">
-          <label className="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer">
+          <label className="flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
             <input
               type="checkbox"
               checked={agreeTerms}
               onChange={(e) => setAgreeTerms(e.target.checked)}
-              className="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+              className="mt-0.5 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500"
             />
             <span>
               I agree to the Brightloop Subscription Terms, Data Privacy Policy, and Master Services Agreement.
@@ -275,7 +270,7 @@ export const SignupForm: React.FC = () => {
         <button
           type="submit"
           disabled={!canSubmit}
-          className="w-full mt-2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="btn-tactile w-full mt-2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -289,10 +284,10 @@ export const SignupForm: React.FC = () => {
       </form>
 
       {/* Switch to Login */}
-      <div className="mt-6 pt-6 border-t border-slate-100 text-center">
-        <p className="text-xs text-slate-500">
+      <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Already have a Brightloop account?{' '}
-          <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-800">
+          <Link to="/login" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">
             Sign in
           </Link>
         </p>

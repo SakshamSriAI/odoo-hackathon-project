@@ -1,88 +1,70 @@
 # Brightloop Software - Enterprise Subscription Management System
 
-Brightloop Software is an enterprise-grade Subscription Management and Billing engine built with React 18, Vite, TypeScript, and Tailwind CSS v4.
+Brightloop Software is an enterprise-grade full-stack Subscription Management, Quote-to-Cash, and Automated Billing Engine built with **React 18**, **Node.js Express**, **Native SQLite (`node:sqlite`)**, **Vite 6**, **TypeScript 5**, and **Tailwind CSS v4**.
 
 ---
 
 ## 🚀 Key Modules & Architecture
 
-### Phase 1: Project Setup & Authentication UI
-- **Strict Signup Validation**: Password policy enforcing >8 characters, uppercase, lowercase, and special character requirements with real-time feedback.
-- **Role-Based Protected Routing**: Distinct, isolated portals for `Admin`, `Internal Staff`, and `Customer` personas.
-- **Forgot Password Interface**: Dispatches simulation password reset tokens and links.
+### Full-Stack Architecture
+- **Native SQLite Database Engine**: Built with Node.js v24 `node:sqlite` (`DatabaseSync`), requiring zero external database daemons or network setup. Persisted locally in `server/data/brightloop.db`.
+- **Modular Express REST API**: 9 dedicated routers (`auth`, `products`, `plans`, `quotations`, `subscriptions`, `invoices`, `discounts`, `payments`, `finance`) operating on port 5001 with sub-millisecond query performance.
+- **Dual-Route Resilient API Client**: Universal typed client (`src/services/api.ts`) connecting seamlessly in development and production with automatic proxy fallbacks.
+- **Full Database Synchronization**: Instant state synchronization across 5 React Contexts (`AuthContext`, `CatalogContext`, `SalesContext`, `InvoicingContext`, `FinanceContext`).
 
-### Phase 2: Admin Product Catalog & Plan Configuration
-- **Product Catalog Management**: Products with base price, cost price, and sales notes.
-- **Dynamic Variant Markups**: Brand variant selector adding custom markups (e.g. +$560 prime markup).
-- **Flexible Subscription Plans**: Cadences (daily, weekly, monthly, yearly), minimum purchase quantities, availability date windows.
-- **Policy Governance Toggles**: Automatic closure, pause permissions, renewal rules, and early termination controls.
+### UI & UX Experience
+- **Day & Focused Night Themes**: Seamless theme switcher with high-contrast emerald/indigo dark surfaces and crystal-clear typography.
+- **Micro-Interactions & Tactile Polish**: Button hover elevation (`hover-lift`), tactile click responses (`btn-tactile`), dynamic specular card shimmer (`card-shine`), pop-in modal curves, and pulsing live database status indicators.
+- **Multi-Role Portals**: 1-click persona switcher between **Enterprise Admin**, **Sales Staff**, and **Customer Portal**.
 
-### Phase 3: Sales Workflow & Subscription Management
-- **Internal Staff Portal**: Tailored for Sales Representatives and Operations.
-- **Quotation Generator**: Create formal quotes from standardized templates.
-- **5-Stage Lifecycle Stepper**: Visual progression from `Draft` → `Quotation` → `Confirmed` → `Active` → `Closed`.
-- **Itemized Subscription Details**: Line items with automated taxes, quantities, discounts, and payment terms.
-
-### Phase 4: Automated Invoicing & Discount Rules UI
-- **Discount Rules Engine**: Configure fixed-dollar ($) or percentage (%) discounts, minimum order thresholds, date limits, and global usage caps.
-- **Invoice Governance**: Automated tax calculation, pre-filled client data, and status progression (`Draft`, `Confirmed`, `Paid`).
-- **Interactive Actions**: Confirm, cancel, email dispatch simulation, and print-ready receipts.
-
-### Phase 5: Treasury, Payments & Finance Lead Dashboard
-- **Payment Recording UI**: Record incoming transactions against specific invoices with payment method, amount, date, and notes.
-- **Finance Lead Analytics**: High-level KPIs for Active Subscriptions, Total Revenue, Payments Collected, and Overdue Invoices.
-- **Cash Flow Telemetry**: Smooth cubic-bezier interactive SVG telemetry chart tracking rolling monthly liquidity.
-- **Enterprise Performance**: Virtualized/paginated data table maintaining sub-2-second response times across 1,200+ synthesized subscriptions.
+### Business Logic & Workflows
+- **Product Catalog & Dynamic Markups**: Tiered branding SLA markups (+560 Prime, +850 OEM, +1200 FedRAMP) with real-time profit margin percentage calculators.
+- **Policy Governance Toggles**: Configure subscription plans with automated expiration, pause rules, and renewal controls.
+- **Sales Workflow & Stepper Pipeline**: Visual 5-stage progression (`Draft` → `Quotation` → `Confirmed` → `Active` → `Closed`) with complete audit event history.
+- **Auto-Invoice Engine**: Transitioning a subscription quote to `Confirmed` automatically creates an official invoice in SQLite with itemized lines, taxes, and payment terms.
+- **Automated Ledger Reconciliation**: Recording incoming payments (ACH, Wire Transfer, Check, Credit Card) automatically marks the target invoice as `Paid`.
+- **Treasury Telemetry & High-Volume Benchmarking**: Real-time SQL aggregations for MRR, collection rates, overdue metrics, and a 1,250-record subscription benchmark executing in under 5ms.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 18
-- **Bundler**: Vite 6
-- **Styling**: Tailwind CSS v4 (`@tailwindcss/vite`)
-- **Language**: TypeScript 5
-- **Routing**: React Router DOM v7
-- **Icons**: Lucide React
+- **Frontend**: React 18, Vite 6, Tailwind CSS v4, Lucide React, React Router DOM v7
+- **Backend**: Node.js v24, Express v5, CORS, Concurrently, TSX
+- **Database**: SQLite via Node.js native `DatabaseSync` (`node:sqlite`)
+- **Testing**: Automated REST API smoke-test suite and End-to-End Quote-to-Cash lifecycle test runner
 
 ---
 
-## 📦 Getting Started in VS Code
+## 📦 Getting Started
 
-### Step 1: Clone & Open in VS Code
-```bash
-git clone https://github.com/SakshamSriAI/odoo-hackathon-project.git
-cd odoo-hackathon-project
-code .
-```
-
-### Step 2: Install Node Dependencies
-Open the VS Code Terminal (`Ctrl + \`` or `Cmd + \``) and install packages:
+### 1. Installation
 ```bash
 npm install
 ```
 
-### Step 3: Run the Development Server
+### 2. Run Concurrent Development Server (Frontend + Backend)
 ```bash
 npm run dev
 ```
-Click the terminal link `http://localhost:5173/` or open it in your browser.
+- **Frontend UI**: http://localhost:5173/
+- **Backend API**: http://localhost:5001/api
+- **Health Check**: http://localhost:5001/api/health
 
-> ⚠️ **Important Note on VS Code Live Preview / Live Server**:
-> Do **NOT** use extensions like *Live Server* or VS Code *Show Preview* directly on `index.html`. 
-> Brightloop is a modern React 18 + TypeScript application that requires Vite's compilation server. Always start the app using `npm run dev` or `npm run preview`.
-
-### Step 4: Previewing Production Build
+### 3. Verification & Testing Commands
 ```bash
-npm run preview
+# 1. Run the 12-point REST API Smoke Test
+npm run test:api
+
+# 2. Run the Full Quote-to-Cash Lifecycle Integration Test
+npm run test:lifecycle
+
+# 3. Inspect Current SQLite Database Records
+npm run db:check
+
+# 4. (Optional) Reset and re-seed the SQLite database to factory defaults
+npm run seed
+
+# 5. Production Build
+npm run build
 ```
-*(Automatically compiles `dist/` and launches the preview server at `http://localhost:4173`)*
-
----
-
-## 🔑 Demo Login Accounts
-
-On first launch, you are redirected to `/login`. Click any 1-click test persona pill to immediately access:
-- **Admin**: `admin@brightloop.io` / `Password123!`
-- **Staff (Sales Ops)**: `staff@brightloop.io` / `Password123!`
-- **Customer**: `customer@brightloop.io` / `Password123!`

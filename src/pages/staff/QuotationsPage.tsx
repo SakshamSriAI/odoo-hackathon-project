@@ -40,7 +40,7 @@ export const QuotationsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -54,7 +54,7 @@ export const QuotationsPage: React.FC = () => {
 
         <button
           onClick={() => setIsGeneratorOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
+          className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Launch Custom Quotation</span>
@@ -75,18 +75,18 @@ export const QuotationsPage: React.FC = () => {
           {templates.map((tmpl) => (
             <div
               key={tmpl.id}
-              className="bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs hover:border-indigo-300 transition-all flex flex-col justify-between space-y-4"
+              className="hover-lift card-shine bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-500 transition-all flex flex-col justify-between space-y-4 cursor-pointer group"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold uppercase text-indigo-700 bg-indigo-50 border border-indigo-200/60 px-2 py-0.5 rounded-full badge-interactive">
                     {tmpl.targetTier}
                   </span>
                   <span className="text-[11px] font-mono text-slate-400">
                     Terms: {tmpl.defaultPaymentTerms.toUpperCase()}
                   </span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 mt-2">{tmpl.name}</h4>
+                <h4 className="text-sm font-bold text-slate-900 mt-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{tmpl.name}</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                   {tmpl.description}
                 </p>
@@ -98,10 +98,10 @@ export const QuotationsPage: React.FC = () => {
                 </span>
                 <button
                   onClick={() => setIsGeneratorOpen(true)}
-                  className="inline-flex items-center gap-1 font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                  className="btn-tactile inline-flex items-center gap-1 font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
                 >
                   <span>Apply Template</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
@@ -120,7 +120,7 @@ export const QuotationsPage: React.FC = () => {
               Quotations in draft or delivered stage progressing through the pipeline
             </p>
           </div>
-          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+          <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-50 text-blue-700 border border-blue-200 badge-interactive">
             {pendingQuotations.length} Pending
           </span>
         </div>
@@ -146,7 +146,7 @@ export const QuotationsPage: React.FC = () => {
                 </tr>
               ) : (
                 pendingQuotations.map((sub) => (
-                  <tr key={sub.id} className="hover:bg-slate-50/60 transition-colors">
+                  <tr key={sub.id} className="interactive-row">
                     <td className="py-3.5 px-4 font-mono font-bold text-blue-600">
                       {sub.quotationNumber}
                       <div className="text-[10px] text-slate-400 font-normal">
@@ -166,7 +166,7 @@ export const QuotationsPage: React.FC = () => {
 
                     <td className="py-3.5 px-4">
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border badge-interactive ${
                           sub.status === 'draft'
                             ? 'bg-slate-100 text-slate-700 border-slate-300'
                             : 'bg-blue-50 text-blue-700 border-blue-200'
@@ -188,7 +188,7 @@ export const QuotationsPage: React.FC = () => {
                               advanceSubscriptionStatus(sub.id, 'quotation');
                               notify('success', 'Quotation Dispatched', `Sent ${sub.quotationNumber} to customer.`);
                             }}
-                            className="px-2.5 py-1 text-[11px] rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold transition-colors"
+                            className="btn-tactile px-2.5 py-1 text-[11px] rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold transition-colors cursor-pointer"
                           >
                             Send Quote
                           </button>
@@ -199,14 +199,14 @@ export const QuotationsPage: React.FC = () => {
                               advanceSubscriptionStatus(sub.id, 'confirmed');
                               notify('success', 'Contract Confirmed', `Customer signed ${sub.quotationNumber}!`);
                             }}
-                            className="px-2.5 py-1 text-[11px] rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold transition-colors"
+                            className="btn-tactile px-2.5 py-1 text-[11px] rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 font-semibold transition-colors cursor-pointer"
                           >
                             Mark Confirmed
                           </button>
                         )}
                         <button
                           onClick={() => setSelectedSubForView(sub)}
-                          className="px-2.5 py-1 text-[11px] rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold transition-colors"
+                          className="btn-tactile px-2.5 py-1 text-[11px] rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold transition-colors cursor-pointer"
                         >
                           View Details
                         </button>

@@ -116,7 +116,7 @@ export const SubscriptionPipelineStepper: React.FC<SubscriptionPipelineStepperPr
           <div className="flex items-center gap-2 self-start sm:self-auto">
             <button
               onClick={() => handleAdvance(nextStage)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
+              className="btn-tactile inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/25 transition-all cursor-pointer"
             >
               <span>
                 {nextStage === 'quotation' && 'Dispatch Quotation to Customer'}
@@ -124,7 +124,7 @@ export const SubscriptionPipelineStepper: React.FC<SubscriptionPipelineStepperPr
                 {nextStage === 'active' && 'Provision & Activate Subscription'}
                 {nextStage === 'closed' && 'Conclude / Close Subscription'}
               </span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
         )}
@@ -150,12 +150,12 @@ export const SubscriptionPipelineStepper: React.FC<SubscriptionPipelineStepperPr
               <div
                 key={stage.key}
                 onClick={() => !isCurrent && handleAdvance(stage.key)}
-                className={`p-3.5 rounded-xl border flex flex-col justify-between transition-all cursor-pointer ${
+                className={`hover-lift group p-3.5 rounded-xl border flex flex-col justify-between transition-all duration-200 cursor-pointer ${
                   isCurrent
-                    ? 'bg-indigo-50/80 border-indigo-500 ring-2 ring-indigo-500/20 shadow-md'
+                    ? 'bg-indigo-50/90 dark:bg-indigo-950/50 border-indigo-500 ring-4 ring-indigo-500/25 shadow-lg scale-[1.02]'
                     : isCompleted
-                    ? 'bg-emerald-50/40 border-emerald-200 text-slate-700 hover:bg-emerald-50/70'
-                    : 'bg-slate-50/60 border-slate-200 text-slate-400 hover:bg-slate-100/60'
+                    ? 'bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/60 text-slate-700 dark:text-slate-300 hover:bg-emerald-50/80 dark:hover:bg-emerald-950/40'
+                    : 'bg-slate-50/60 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
                 }`}
                 title={`Click to set stage to ${stage.label}`}
               >
