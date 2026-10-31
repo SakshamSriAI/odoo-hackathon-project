@@ -27,6 +27,20 @@ interface MonthlyData {
   revenue: number;
 }
 
+interface ActiveSubscriptionItem {
+  id: string;
+  planName: string;
+  cadence: 'Monthly' | 'Yearly';
+  amount: number;
+  periodLabel: string;
+  status: 'Active' | 'Pending Renewal';
+  startDate: string;
+  renewalDate: string;
+  autoRenew: boolean;
+  seatsAllocated: number;
+  productFeatures: string[];
+}
+
 const MONTHLY_ANALYTICS: MonthlyData[] = [
   { month: 'Jan', subscriptions: 2, revenue: 6800 },
   { month: 'Feb', subscriptions: 2, revenue: 7200 },
@@ -50,6 +64,61 @@ export const CustomerDashboardPage: React.FC = () => {
 
   const [activeHoverIndex, setActiveHoverIndex] = useState<number>(6); // Default to July like reference image
   const [timeRange, setTimeRange] = useState<string>('Last 12 Months');
+
+  const [activeSubscriptions, setActiveSubscriptions] = useState<ActiveSubscriptionItem[]>([
+    {
+      id: 'SUB-2026-0891',
+      planName: 'Brightloop Enterprise Cloud Pro (Prime Edition)',
+      cadence: 'Yearly',
+      amount: 14400,
+      periodLabel: '$14,400 / yr',
+      status: 'Active',
+      startDate: '2025-01-15',
+      renewalDate: '2026-01-15',
+      autoRenew: true,
+      seatsAllocated: 50,
+      productFeatures: [
+        'Brightloop Cloud Orchestrator (Prime Edition +$560 markup)',
+        'Real-Time Invoicing & Discount Engine',
+        '24/7 Dedicated Technical Account Manager (TAM)',
+        '99.99% Guaranteed SLA Uptime',
+      ],
+    },
+    {
+      id: 'SUB-2026-0412',
+      planName: 'API Integration & Webhook Addon Pack',
+      cadence: 'Monthly',
+      amount: 350,
+      periodLabel: '$350 / mo',
+      status: 'Active',
+      startDate: '2025-03-01',
+      renewalDate: '2025-11-01',
+      autoRenew: true,
+      seatsAllocated: 10,
+      productFeatures: [
+        'High-Throughput Webhook Listeners',
+        'ERP & Treasury Synchronizer Connector',
+        'Custom OAuth2 Scopes',
+      ],
+    },
+  ]);
+
+  const toggleAutoRenew = (subId: string) => {
+    setActiveSubscriptions((prev) =>
+      prev.map((s) => {
+        if (s.id === subId) {
+          const next = !s.autoRenew;
+          notify(
+            'info',
+            'Auto-Renewal Preference Updated',
+            `Subscription ${s.id} auto-renewal is now ${next ? 'enabled' : 'disabled'}.`
+          );
+          return { ...s, autoRenew: next };
+        }
+        return s;
+      })
+    );
+  };
 
   const hoveredData = MONTHLY_ANALYTICS[activeHoverIndex] || MONTHLY_ANALYTICS[6];
 
@@ -527,7 +596,119 @@ export const CustomerDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Bottom Section: Quick Actions & Recent Activity */}
+      {/* 4. Active Plans & Subscription Commitments (from design reference) */}
+      <div className="space-y-4">
+        <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-2 border border-emerald-200">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>2 Active Enterprise Licenses</span>
+            </div>
+            <h2 className="text-xl font-bold text-slate-900">
+              Current Subscription Commitments
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Registered corporate software packages for {orgName}.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <div className="text-xs text-slate-400 font-medium">Total Annualized Run-Rate</div>
+              <div className="text-xl font-extrabold text-slate-900">$18,600 / yr</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Subscription Cards List */}
+        <div className="space-y-4">
+          {activeSubscriptions.map((sub) => (
+            <div
+              key={sub.id}
+              className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden hover:border-slate-300 transition-colors"
+            >
+              {/* Card Header */}
+              <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                      {sub.id}
+                    </span>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      <span>{sub.status}</span>
+                    </span>
+                    <span className="px-2 py-0.5 text-[11px] font-medium text-slate-500 bg-slate-100 rounded">
+                      Cadence: {sub.cadence}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mt-1">{sub.planName}</h3>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="text-right">
+                    <div className="text-2xl font-black text-slate-900">{sub.periodLabel}</div>
+                    <div className="text-[11px] text-slate-400">
+                      Covers {sub.seatsAllocated} provisioned seats
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Body & Feature Breakdown */}
+              <div className="p-5 bg-slate-50/50 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                {/* Feature list */}
+                <div className="md:col-span-2 space-y-2">
+                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Included Enterprise Entitlements
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {sub.productFeatures.map((feat, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-slate-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 mt-0.5 shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Schedule and policy settings */}
+                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3">
+                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Term & Lifecycle Policies
+                  </div>
+                  <div className="space-y-1.5 text-slate-600">
+                    <div className="flex justify-between">
+                      <span>Activated:</span>
+                      <span className="font-semibold text-slate-900">{sub.startDate}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Renewal Date:</span>
+                      <span className="font-semibold text-slate-900">{sub.renewalDate}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-slate-700 font-medium">Auto-Renewal:</span>
+                    <button
+                      onClick={() => toggleAutoRenew(sub.id)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                        sub.autoRenew
+                          ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                          : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                      }`}
+                    >
+                      {sub.autoRenew ? 'Enabled (Active)' : 'Disabled'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Bottom Section: Quick Actions & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Quick Actions (2 Cols) */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-2xs p-6 space-y-4">
